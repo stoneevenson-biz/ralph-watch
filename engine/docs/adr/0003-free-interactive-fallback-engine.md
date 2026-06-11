@@ -12,9 +12,9 @@ As of **June 15 2026**, headless `claude -p` / Agent-SDK usage on a Claude subsc
 Ralph's per-lane engine builds each worktree with `claude -p` → so all-day parallel ralphing now
 burns that $200 credit (Pool 2). When it's exhausted, the default behavior is a **hard stop**
 ("Agent SDK requests stop until your credit refreshes") unless overflow is enabled — and overflow
-is uncapped (violates Stone's Kalshi rule). See `research/ralph-after-payg.md`.
+is uncapped (violates the no-silent-spend budget rule). See `research/ralph-after-payg.md`.
 
-Stone's constraints: OAuth-plan preferred, NO runaway/uncapped bill, functionality-first. He does
+your constraints: OAuth-plan preferred, NO runaway/uncapped bill, functionality-first. He does
 NOT want a dead pipeline when the credit runs out — he wants ralph to **degrade, not stop**.
 
 **Proven this session (2026-06-07, live on this machine):** a concurrent **interactive** `claude`
@@ -51,7 +51,7 @@ The free engine's loop respects ralph's **fresh-context-per-spec** rule via a tw
 
 ## Consequences
 - **Pro:** ralph never dies on credit exhaustion — it degrades to free and keeps shipping. The
-  $200 is a soft ceiling, not a wall. Honors Kalshi rule (governor gates the flip; no silent
+  $200 is a soft ceiling, not a wall. Honors the no-silent-spend rule (governor gates the flip; no silent
   overflow billing). Reuses the whole scheduler/preflight/merge/Linear machinery unchanged.
 - **Con (accepted):** the free engine is **watch-not-drive** — the scheduler polls worktree status
   files (`.fpr/last-spec-status`, git log, test exit) instead of reading a pipe. It's serial-ish
@@ -60,7 +60,7 @@ The free engine's loop respects ralph's **fresh-context-per-spec** rule via a tw
 - **Con:** interactive panes burn the **interactive 5h/weekly quota** (~4× faster with 4 lanes) and
   default to **Opus** unless forced to Sonnet — the driver MUST launch with `--model
   claude-sonnet-4-6` to stretch the free quota. Free of $, not free of rate-limit.
-- **Deferred (NOT a blocker):** the Hermes/SSH "while away" path needs a PTY (interactive `claude`
+- **Deferred (NOT a blocker):** the remote/SSH "while away" path needs a PTY (interactive `claude`
   has no TTY under detached `Start-Process`). Desk path (`wt` split-pane) is the shipped fallback;
   PTY-via-winpty/tmux is a later enhancement. The fallback mostly matters at-desk anyway.
 - **Process hygiene flag:** ~22 stray `claude` processes were observed during testing — a fleet

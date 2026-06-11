@@ -1,7 +1,7 @@
 # Repo Memory — <repo-name>
 
 Append-only **gotchas log** for THIS repo. One file per lesson, frontmatter + body, same format
-as Stone's global memory — just repo-scoped and committed here. Read this at the start of any
+as your global memory — just repo-scoped and committed here. Read this at the start of any
 work in this repo; it'll save you from a trap someone already hit.
 
 **What goes here (dynamic):** non-obvious things learned the hard way while working —

@@ -39,7 +39,7 @@ log() { echo "$*" | tee -a "$EXEC_LOG" >&2; }   # to stderr+file, never stdout (
 plog() { command -v node >/dev/null 2>&1 && node "$HOME/.claude/ralph/pipeline-log.mjs" "$@" >/dev/null 2>&1 || true; }
 
 # Write a clean machine-readable status the monitor renders. One line of JSON, overwritten each update.
-# state ∈ running | held | blocked | failed | done.  blocker = path to the thing needing Stone, or "".
+# state ∈ running | held | blocked | failed | done.  blocker = path to the thing needing the user, or "".
 status_write() { # status_write <state> <phase> <detail> [blocker-path]
   mkdir -p .ralph
   printf '{"state":"%s","repo":"%s","phase":"%s","detail":"%s","blocker":"%s","ts":"%s"}\n' \
@@ -359,7 +359,7 @@ for phase in "${PHASE_LIST[@]}"; do
         continue
       fi
       if [ "$lrc" = "2" ]; then
-        # agent signalled RALPH_BLOCKED — needs Stone's decision. Surface to monitor → grill.
+        # agent signalled RALPH_BLOCKED — needs your decision. Surface to monitor → grill.
         blocked=1
         wt="../${REPO_NAME}-p${phase}-${rep}"
         log "  [p$phase/$rep] BLOCKED — agent needs a human decision (see $wt/BLOCKERS.md)"
@@ -393,13 +393,13 @@ for phase in "${PHASE_LIST[@]}"; do
     done
     if [ "$blocked" = "1" ]; then
       log "phase $phase: a lane is BLOCKED on a human decision — pausing for the grill."
-      log "  → Monitor will grill Stone; he sharpens the spec; re-run the executor to resume."
+      log "  → Monitor will grill the user; he sharpens the spec; re-run the executor to resume."
       plog run_end repo="$REPO_NAME" result=blocked phase="$phase" minutes="$(run_minutes)"
       exit 3   # paused for human (status.json already = blocked, with BLOCKERS path)
     fi
     if [ "$fail" = "1" ]; then
       log "phase $phase had a red lane — halting before merge (stop-on-red guardrail)."
-      # surface to the monitor: a failed/blocked lane is exactly when Stone's input helps.
+      # surface to the monitor: a failed/blocked lane is exactly when your input helps.
       status_write blocked "$phase" "lane failed ($cause) — needs your input" ".ralph/${slug:-fail}.md"
       plog run_end repo="$REPO_NAME" result=failed phase="$phase" minutes="$(run_minutes)"
       exit 1

@@ -2,7 +2,7 @@
 // pipeline-log.mjs — append one structured event to the SYSTEM feedback log (L4 loop).
 //
 // This is the memory for HOW WELL THE SYSTEM BUILDS (vs specs/tests = memory for building).
-// Every loop writes signal here; /pipeline-retro reads it across runs to tell Stone whether
+// Every loop writes signal here; /pipeline-retro reads it across runs to tell the user whether
 // the pipeline itself is healthy and what to tune. Global (cross-repo) so patterns compound.
 //
 // Log: ~/.claude/ralph/pipeline-events.jsonl   (one JSON object per line, append-only)

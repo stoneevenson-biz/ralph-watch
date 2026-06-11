@@ -24,7 +24,7 @@ filesystem. Contract per worktree:
 ### AC-1 — Interactive lane runs FREE (Pool 1)  [PROVEN — keep as regression check]
 A lane tagged `engine: claude-interactive` launches an **interactive** `claude` (no `-p`) in its
 worktree; `/status` shows `Claude Max account` (Pool 1), not API/metered.
-- **Verify (manual, proven 2026-06-07):** `C:\Users\Stone\PROVE-POOL1.ps1` → `/status` in pane =
+- **Verify (manual):** a one-off `claude` launch in a worktree → `/status` in pane =
   "Claude Max account". (No automated seam — it's an external-process/billing fact.)
 - **Verify (automated, the driver shape):** assert the launched command contains `claude` and does
   NOT contain `-p`/`--print`:
@@ -58,7 +58,7 @@ The outer driver starts a NEW interactive `claude` process per spec (not one lon
   specs → assert it prints/launches TWO separate `claude` invocations (one per spec), not one. Exit 0 iff 2.
 
 ## Out of scope (this build)
-- Hermes/SSH PTY path (deferred — ADR-0003).
+- remote/SSH PTY path (deferred — ADR-0003).
 - Pane cleanup/process-hygiene daemon (flagged; follow-up).
 - Real ccusage integration (governor reads a simple ledger first; ccusage is an optional reader).
 

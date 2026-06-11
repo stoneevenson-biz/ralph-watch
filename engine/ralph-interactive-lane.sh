@@ -84,7 +84,7 @@ EOF
         node "$DRIVER" --cwd "$PWD" --spec ".fpr/current-spec.md" --fpr ".fpr" --model "$MODEL" &
         ;;
       detached)
-        # Hermes/SSH path needs a PTY (winpty/tmux) — DEFERRED per ADR-0003. Warn loudly.
+        # remote/SSH path needs a PTY (winpty/tmux) — DEFERRED per ADR-0003. Warn loudly.
         echo "fpr: BACKEND=detached needs a PTY wrapper (winpty/tmux) — not yet implemented (ADR-0003)." >&2
         ;;
     esac

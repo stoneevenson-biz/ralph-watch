@@ -13,13 +13,13 @@
 param(
   [Parameter(Mandatory=$true)][string[]]$Repos,
   [switch]$WatchOnly,                 # don't start the loop, only the monitor
-  [string]$BashExe = ""               # auto-detected if not given (Stone's git is on D:, not C:)
+  [string]$BashExe = ""               # auto-detected if not given (your git is on D:, not C:)
 )
 
 function Find-Bash {
   param([string]$Override)
   if ($Override -and (Test-Path $Override)) { return $Override }
-  # 1) candidates on any drive (Stone's git is D:\Git)
+  # 1) candidates on any drive (your git is D:\Git)
   $cands = @(
     "C:\Program Files\Git\bin\bash.exe","C:\Program Files\Git\usr\bin\bash.exe",
     "D:\Git\bin\bash.exe","D:\Git\usr\bin\bash.exe",

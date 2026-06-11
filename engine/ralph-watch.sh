@@ -257,14 +257,14 @@ DIR="${1:-.}"; cd "$DIR" || { echo "no such dir: $DIR"; exit 2; }
 REPO="$(basename "$(pwd)")"
 POLL="${POLL:-2}"   # seconds between refreshes
 
-# Launch Claude IN THIS TERMINAL to grill Stone on the blocker, then return to monitoring.
+# Launch Claude IN THIS TERMINAL to grill the user on the blocker, then return to monitoring.
 grill_on_blocker() {
   local blocker="$1" state="$2"
   clr; bar; printf "  ⛔ %s · %s — Claude needs a decision from you\n" "$REPO" "$state"; bar; echo
   # Gather RICH context up front so Claude grills from full knowledge, not a thin blocker line.
   local blocked_specs; blocked_specs="$(grep -lE '^status:[[:space:]]*(blocked|draft)|## Blocked' specs/*.md 2>/dev/null | head -5)"
   local ctx="You are resolving a BLOCKER in a Ralph autonomous build loop, repo '$REPO' (state: $state).
-The loop CANNOT proceed until you extract the missing decision from Stone and write it to disk.
+The loop CANNOT proceed until you extract the missing decision from the user and write it to disk.
 This is a /grill-me-style session: relentless, ONE question at a time, until you genuinely have what the loop needs.
 
 === BLOCKER ===
@@ -287,13 +287,13 @@ $(git log -5 --pretty='%h %s' 2>/dev/null)
 
 === HOW TO GRILL (from /grill-me) ===
 - ONE question at a time. Wait for the answer. Then the next. Never dump a list of questions.
-- For each question, state your RECOMMENDED answer + why — make it easy for Stone to confirm or correct.
-- Be willing to disagree. If Stone's answer is vague, contradicts CONTEXT.md, contradicts an AC, or
+- For each question, state your RECOMMENDED answer + why — make it easy for the user to confirm or correct.
+- Be willing to disagree. If your answer is vague, contradicts CONTEXT.md, contradicts an AC, or
   doesn't actually unblock the build, PUSH BACK and ask again. A grill that just accepts is worthless.
 - Walk the decision tree depth-first: resolving one answer may surface the next thing you must ask.
 - Keep going until you can state, concretely, what the loop will now build differently. If you can't
   state that, you don't have enough yet — ask more.
-- Use CONTEXT.md domain terms. Stay terse elsewhere, but questions to Stone must be crisp and clear.
+- Use CONTEXT.md domain terms. Stay terse elsewhere, but questions to the user must be crisp and clear.
 
 === WHEN YOU GENUINELY HAVE WHAT YOU NEED ===
 1. SHARPEN THE SPEC: edit the blocked slice spec — add the decision / rewrite the fuzzy AC that caused
@@ -302,9 +302,9 @@ $(git log -5 --pretty='%h %s' 2>/dev/null)
 2. LOG for the feedback loop:
    node ~/.claude/ralph/pipeline-log.mjs lane_failed repo=$REPO cause=blocked prevention=\"<one line: what the PRD/AC should have specified so this never blocks again>\"
    and append a short Q&A note to .memory/ (a <slug>.md + MEMORY.md pointer).
-3. Tell Stone: the loop will pick up the sharpened spec on its next iteration. Then exit.
+3. Tell the user: the loop will pick up the sharpened spec on its next iteration. Then exit.
 
-Start now with your FIRST question to Stone."
+Start now with your FIRST question to the user."
   if command -v claude >/dev/null 2>&1; then
     claude "$ctx" || true
   else

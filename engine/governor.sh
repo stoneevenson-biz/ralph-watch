@@ -3,7 +3,7 @@
 # Tracks Pool-2 (metered claude -p) spend against the monthly Agent-SDK credit and
 # decides when newly-scheduled lanes should flip to the FREE interactive engine.
 #
-# Honors Stone's Kalshi rule: this is a GATE, not an autopilot that spends silently.
+# Honors the no-silent-spend budget rule: this is a GATE, not an autopilot that spends silently.
 # It never enables overflow billing; it only routes new lanes to the free engine.
 #
 # Ledger: newline-delimited JSON, one object per ralph run, each with "total_cost_usd"
