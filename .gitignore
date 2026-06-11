@@ -1,0 +1,10 @@
+# Machine-specific runtime state — never publish (regenerates locally; see SETUP.md §5)
+engine/loops.json
+engine/pipeline-events.jsonl
+engine/resolve-request.json
+engine/*.bak
+engine/*.bak-*
+engine/research/
+.ralph/
+.fpr/
+*.log
